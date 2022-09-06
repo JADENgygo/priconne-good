@@ -1,5 +1,3 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-
 export const Footer = (props: { className?: string }) => {
   return (
     <div
