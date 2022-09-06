@@ -1,5 +1,3 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-
 export const Footer = (props: { className?: string }) => {
   return (
     <div
@@ -16,6 +14,7 @@ export const Footer = (props: { className?: string }) => {
           プリコネツール
         </a>
       </div>
+      <div>一部画像: &copy; Cygames, Inc.</div>
     </div>
   );
 };
