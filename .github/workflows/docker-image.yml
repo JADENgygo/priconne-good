@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # firebase
+      NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
+      NEXT_PUBLIC_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_AUTH_DOMAIN }}
+      NEXT_PUBLIC_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PROJECT_ID }}
+      NEXT_PUBLIC_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_STORAGE_BUCKET }}
+      NEXT_PUBLIC_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_MESSAGING_SENDER_ID }}
+      NEXT_PUBLIC_APP_ID: ${{ secrets.NEXT_PUBLIC_APP_ID }}
+      # firebase admin
+      TYPE: ${{ secrets.TYPE }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      AUTH_URI: ${{ secrets.AUTH_URI }}
+      TOKEN_URI: ${{ secrets.TOKEN_URI }}
+      AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.AUTH_PROVIDER_X509_CERT_URL }}
+      CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+      # firebase admin
+      FIREBASE_AUTH_EMULATOR_HOST: ${{ secrets.FIREBASE_AUTH_EMULATOR_HOST }}
+      FIRESTORE_EMULATOR_HOST: ${{ secrets.FIRESTORE_EMULATOR_HOST }}
+      # gh
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - run: npm install
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run: |
+          npm run emulate &
+          npm run dev &
+      - run: |
+          while [ \
+            "$(curl --retry-connrefused -s -o /dev/null -w '%{http_code}' localhost:9099)" != '200' \
+            -a "$(curl --retry-connrefused -s -o /dev/null -w '%{http_code}' localhost:8080)" != '200' \
+          ]; do
+            :
+          done
+      - run: npm test
+      - if: success()
+        run: |
+          message=$(git log --oneline -n 1 | sed -E 's/^\S+ (.+)/\1/')
+          gh pr create --title "${message}" --body "自動生成プルリクエスト" --base master
+          gh pr merge --merge
+      - if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          path: cypress
