@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: priconne-good
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+    tty: true
+
+  emulator:
+    build:
+      context: .
+      dockerfile: Dockerfile.emulator
+    image: priconne-good-emulator
+    ports:
+      - 4000:4000 # ui
+      - 9099:9099 # auth
+      - 8080:8080 # store
+    volumes:
+      - .:/home/node/app
+    tty: true

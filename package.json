@@ -1,0 +1,45 @@
+{
+  "name": "priconne-good",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint:check": "prettier -c . & next lint",
+    "lint:fix": "prettier -w . && next lint --fix",
+    "test": "cypress run --browser chrome",
+    "emulate": "firebase emulators:start"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1",
+    "dayjs": "^1.10.7",
+    "firebase": "^9.5.0",
+    "firebase-admin": "^10.0.1",
+    "formik": "^2.2.9",
+    "next": "12.0.4",
+    "nookies": "^2.5.2",
+    "react": "17.0.2",
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "17.0.2",
+    "sharp": "^0.29.3",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/bootstrap": "^5.2.3",
+    "@types/node": "16.11.10",
+    "@types/react": "17.0.36",
+    "@types/react-bootstrap": "^0.32.30",
+    "@types/yup": "^0.29.13",
+    "cypress": "^9.1.1",
+    "eslint": "7.32.0",
+    "eslint-config-next": "12.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "firebase-tools": "^9.23.3",
+    "prettier": "^2.5.1",
+    "typescript": "4.5.2",
+    "vercel": "^23.1.2"
+  }
+}
