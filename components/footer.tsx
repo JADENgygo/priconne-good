@@ -18,3 +18,4 @@ export const Footer = (props: { className?: string }) => {
     </div>
   );
 };
+
