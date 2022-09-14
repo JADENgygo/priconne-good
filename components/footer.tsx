@@ -9,12 +9,12 @@ export const Footer = (props: { className?: string }) => {
         </a>
         <a
           href="https://priconne-portfolio.vercel.app"
-          className={`ms-3 link-dark link`}
+          className={`ms-3 link-dark`}
         >
-          プリコネツール
+          闇プリン開発室
         </a>
       </div>
-      <div>一部画像: &copy; Cygames, Inc.</div>
+      <div>一部画像 &copy; Cygames, Inc.</div>
     </div>
   );
 };
