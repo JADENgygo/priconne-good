@@ -25,9 +25,8 @@ const Home: NextPage<Props> = (props: Props) => {
 
   return (
     <div>
-      <div className="bg-dark bg-gradient text-center text-white pt-5 pb-5">
+      <div className="bg-secondary text-center text-white pt-5 pb-5">
         <div className="container">
-          <p className="text-white fs-3 title">プリコネグッド</p>
           プリコネグッドは、クランメンバーへのいいね管理ツールです。
         </div>
       </div>
@@ -42,10 +41,10 @@ const Home: NextPage<Props> = (props: Props) => {
       <div className="container mt-5 mb-5 text-center d-flex justify-content-center align-items-center flex-wrap">
         <div className="me-lg-5 me-lg-5">
           <Image
-            src="/img/counter.png"
+            src="/img/priconne-good.webp"
             alt="カウンター"
-            width={320}
-            height={599}
+            width={375}
+            height={627}
           />
         </div>
         <div>

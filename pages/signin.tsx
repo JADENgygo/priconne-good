@@ -27,7 +27,7 @@ const Signin: NextPage = () => {
         <div className="col-lg-4 col-12">
           <button
             type="button"
-            className={`btn btn-outline-dark mt-3 text-center ${styles["signin-button"]}`}
+            className={`btn btn-dark mt-3 text-center ${styles["signin-button"]}`}
             onClick={loginByTwitter}
             id="twitterLogin"
           >
@@ -39,14 +39,9 @@ const Signin: NextPage = () => {
         </div>
         <div className="col-lg-4"></div>
       </div>
-      <Accordion className="mt-3">
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>新規登録/ログインできない場合</Accordion.Header>
-          <Accordion.Body>
-            ブラウザの設定でCookieとトラッキングの制限を緩めてください。解決しない場合は、Edge/Chrome/Safariでのログインを試みてください。
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+      <div className="alert alert-info mt-3" role="alert">
+        新規登録/ログインできない場合は、ブラウザの設定でCookieとトラッキングの制限を緩めてください。解決しない場合は、Edge/Chrome/Safariでのログインを試みてください。
+      </div>
     </div>
   );
 };
