@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import nookies from "nookies";
 import { signOut, getAuth } from "firebase/auth";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
@@ -40,7 +39,8 @@ const Home: NextPage<Props> = (props: Props) => {
 
       <div className="container mt-5 mb-5 text-center d-flex justify-content-center align-items-center flex-wrap">
         <div className="me-lg-5 me-lg-5">
-          <Image
+          <img
+            className="img-fluid"
             src="/img/priconne-good.webp"
             alt="カウンター"
             width={375}
