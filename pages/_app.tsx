@@ -16,10 +16,10 @@ import {
   initializeFirestore,
   connectFirestoreEmulator,
 } from "firebase/firestore";
-import { Head_ } from "../components/head_";
 import { Header } from "../components/header";
 import { Footer } from "../components/footer";
 import { Loader } from "../components/loader";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [loaded, setLoaded] = useState(false);
@@ -70,17 +70,23 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return () => unsubscribe();
   }, []);
 
-  return loaded ? (
-    <div className="content">
-      <Head_ />
-      <Header />
-      <Component {...pageProps} />
-      <Footer className="footer" />
-    </div>
-  ) : (
+  return (
     <>
-      <Head_ />
-      <Loader />
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>プリコネグッド</title>
+      </Head>
+      {
+        loaded ? (
+          <div className="content">
+            <Header />
+            <Component {...pageProps} />
+            <Footer className="footer" />
+          </div>
+        ) : (
+          <Loader />
+        )
+      }
     </>
   );
 }

@@ -1,7 +1,6 @@
 import style from "../styles/Header.module.css";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 
@@ -28,15 +27,13 @@ export const Header = () => {
     <Navbar
       collapseOnSelect
       expand="sm"
-      bg="black"
-      className="bg-gradient pt-3 pb-3"
+      bg="dark"
+      className="pt-3 pb-3"
       variant="dark"
     >
       <Container>
         <Navbar.Brand className="fs-3">
-          <Link href="/edit">
-            <a className={`link-light ${style.title}`}>プリコネグッド</a>
-          </Link>
+          <Nav.Link href="#" className="link-light" onClick={() => router.push("/")}>プリコネグッド</Nav.Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

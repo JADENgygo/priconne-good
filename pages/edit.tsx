@@ -170,7 +170,7 @@ const Edit: NextPage = () => {
               <div className="col">
                 <button
                   type="button"
-                  className="btn btn-outline-dark"
+                  className="btn btn-dark"
                   onClick={decrement(i)}
                   id={"minusButton" + i.toString()}
                 >
@@ -190,7 +190,7 @@ const Edit: NextPage = () => {
                 </span>
                 <button
                   type="button"
-                  className="btn btn-outline-dark"
+                  className="btn btn-dark"
                   onClick={increment(i)}
                   id={"plusButton" + i.toString()}
                 >
@@ -202,7 +202,7 @@ const Edit: NextPage = () => {
                   <div>
                     <button
                       type="button"
-                      className="btn btn-outline-danger me-3"
+                      className="btn btn-danger me-3"
                       onClick={reset(i)}
                       id={"resetButton" + i.toString()}
                     >
@@ -210,7 +210,7 @@ const Edit: NextPage = () => {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-outline-dark"
+                      className="btn btn-dark"
                       onClick={cancelReset(i)}
                       id={"cancelResetButton" + i.toString()}
                     >
@@ -220,7 +220,7 @@ const Edit: NextPage = () => {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-outline-danger"
+                    className="btn btn-danger"
                     onClick={confirmReset(i)}
                     id={"confirmResetButton" + i.toString()}
                   >
@@ -238,7 +238,7 @@ const Edit: NextPage = () => {
           <div>
             <button
               type="button"
-              className="btn btn-outline-danger me-3"
+              className="btn btn-danger me-3"
               onClick={resetAll}
               id="allResetButton"
             >
@@ -246,7 +246,7 @@ const Edit: NextPage = () => {
             </button>
             <button
               type="button"
-              className="btn btn-outline-dark"
+              className="btn btn-dark"
               onClick={cancelAllReset}
               id="cancelAllResetButton"
             >
@@ -256,7 +256,7 @@ const Edit: NextPage = () => {
         ) : (
           <button
             type="button"
-            className="btn btn-outline-danger"
+            className="btn btn-danger"
             onClick={confirmAllReset}
             id="confirmAllResetButton"
           >
