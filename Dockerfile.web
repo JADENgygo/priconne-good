@@ -9,4 +9,4 @@ RUN apt-get update \
 USER node
 WORKDIR /home/node/app
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]

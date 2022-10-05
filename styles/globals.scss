@@ -4,7 +4,7 @@
   position: relative;
 }
 
-.footer {
+footer {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -16,4 +16,15 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+.theme:hover {
+  text-decoration: underline;
+}
+
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+
+.member::placeholder {
+  color: $gray-400
 }

@@ -16,12 +16,26 @@ import nookies from "nookies";
 import dayjs from "dayjs";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
 
-const Edit: NextPage = () => {
+type Props = {
+  theme: "light" | "dark",
+};
+
+const Edit: NextPage<Props> = (props: Props) => {
   const initNames = [...Array(29)].map(() => "");
   const [names, setNames] = useState(initNames);
   const initCounts = [...Array(29)].map(() => 0);
   const [counts, setCounts] = useState(initCounts);
   const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const inputs = document.querySelectorAll("input");
+    if (props.theme === "light") {
+      Array.from(inputs).forEach(e => e.classList.remove("member"));
+    }
+    else {
+      Array.from(inputs).forEach(e => e.classList.add("member"));
+    }
+  }, [props.theme]);
 
   const fetchDocRef = () => {
     const db = getFirestore();
@@ -152,7 +166,7 @@ const Edit: NextPage = () => {
                 メンバー{i + 1}
               </label>
               <input
-                className="form-control"
+                className={`form-control ${props.theme === "light" ? "" : "bg-secondary text-light"}`}
                 type="text"
                 id={"memberName" + i.toString()}
                 tabIndex={i + 1}
@@ -170,7 +184,7 @@ const Edit: NextPage = () => {
               <div className="col">
                 <button
                   type="button"
-                  className="btn btn-dark"
+                  className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
                   onClick={decrement(i)}
                   id={"minusButton" + i.toString()}
                 >
@@ -190,7 +204,7 @@ const Edit: NextPage = () => {
                 </span>
                 <button
                   type="button"
-                  className="btn btn-dark"
+                  className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
                   onClick={increment(i)}
                   id={"plusButton" + i.toString()}
                 >
@@ -202,7 +216,7 @@ const Edit: NextPage = () => {
                   <div>
                     <button
                       type="button"
-                      className="btn btn-danger me-3"
+                      className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"} me-3`}
                       onClick={reset(i)}
                       id={"resetButton" + i.toString()}
                     >
@@ -210,7 +224,7 @@ const Edit: NextPage = () => {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-dark"
+                      className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
                       onClick={cancelReset(i)}
                       id={"cancelResetButton" + i.toString()}
                     >
@@ -220,7 +234,7 @@ const Edit: NextPage = () => {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-danger"
+                    className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"}`}
                     onClick={confirmReset(i)}
                     id={"confirmResetButton" + i.toString()}
                   >
@@ -238,7 +252,7 @@ const Edit: NextPage = () => {
           <div>
             <button
               type="button"
-              className="btn btn-danger me-3"
+              className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"} me-3`}
               onClick={resetAll}
               id="allResetButton"
             >
@@ -246,7 +260,7 @@ const Edit: NextPage = () => {
             </button>
             <button
               type="button"
-              className="btn btn-dark"
+              className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
               onClick={cancelAllReset}
               id="cancelAllResetButton"
             >
@@ -256,7 +270,7 @@ const Edit: NextPage = () => {
         ) : (
           <button
             type="button"
-            className="btn btn-danger"
+            className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"}`}
             onClick={confirmAllReset}
             id="confirmAllResetButton"
           >
@@ -273,11 +287,12 @@ export default Edit;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
+  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: "/?theme=" + theme,
       },
     };
   }
@@ -286,13 +301,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     await getAdminAuth().verifySessionCookie(session, true);
-    return { props: {} };
+    return { props: {theme} };
   } catch (error) {
     console.error(error);
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: "/?theme=" + theme,
       },
     };
   }

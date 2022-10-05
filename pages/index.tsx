@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 type Props = {
   noSession: boolean;
+  theme: "light" | "dark",
 };
 
 const Home: NextPage<Props> = (props: Props) => {
@@ -24,7 +25,7 @@ const Home: NextPage<Props> = (props: Props) => {
 
   return (
     <div>
-      <div className="bg-secondary text-center text-white pt-5 pb-5">
+      <div className="text-center pt-5 pb-5 container">
         <div className="container">
           プリコネグッドは、クランメンバーへのいいね管理ツールです。
         </div>
@@ -41,10 +42,10 @@ const Home: NextPage<Props> = (props: Props) => {
         <div className="me-lg-5 me-lg-5">
           <img
             className="img-fluid"
-            src="/img/priconne-good.webp"
-            alt="カウンター"
+            src={props.theme === "light" ? "/img/priconne-good-light.webp" : "/img/priconne-good-dark.webp"}
+            alt="priconne-good"
             width={375}
-            height={627}
+            height={592}
           />
         </div>
         <div>
@@ -69,8 +70,9 @@ const Home: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
+  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
-    return { props: { noSession: true } };
+    return { props: { noSession: true, theme } };
   }
 
   initFirebaseAdminApp();
@@ -80,11 +82,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: "/edit",
+        destination: "/edit?theme=" + theme,
       },
     };
   } catch (error) {
-    return { props: { noSession: true } };
+    return { props: { noSession: true, theme } };
   }
 };
 
