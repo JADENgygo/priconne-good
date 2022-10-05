@@ -1,21 +1,25 @@
-export const Footer = (props: { className?: string }) => {
+type Props = {
+  theme: "light" | "dark",
+};
+
+export const Footer = (props: Props) => {
   return (
-    <div
-      className={`bg-dark text-center pt-3 pb-3 ${props.className}`}
+    <footer
+      className="text-center pt-3 pb-3"
     >
       <div className="container">
-        <a href="https://twitter.com/JADENgygo" className={`link-light`}>
+        <a href="https://twitter.com/JADENgygo">
           <i className="bi bi-twitter"></i>
         </a>
         <a
           href="https://priconne-portfolio.vercel.app"
-          className={`ms-3 link-light link`}
+          className={`ms-3 ${props.theme === "light" ? "link-dark" : "link-light"} link`}
         >
           闇プリン開発室
         </a>
       </div>
       <div>一部画像 &copy; Cygames, Inc.</div>
-    </div>
+    </footer>
   );
 };
 

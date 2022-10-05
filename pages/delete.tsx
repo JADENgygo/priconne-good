@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -8,7 +8,11 @@ import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import nookies from "nookies";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
 
-const Delete: NextPage = () => {
+type Props = {
+  theme: "light" | "dark",
+};
+
+const Delete: NextPage<Props> = (props: Props) => {
   const [disabled, setDisabled] = useState(true);
   const router = useRouter();
 
@@ -38,7 +42,7 @@ const Delete: NextPage = () => {
         アカウントを削除する場合は「プリコネ」と入力してください
         <input
           type="text"
-          className="form-control mt-3"
+          className={`form-control ${props.theme === "light" ? "" : "bg-secondary text-light"} mt-3`}
           onChange={confirm}
           id="confirm"
         />
@@ -61,11 +65,12 @@ export default Delete;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
+  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: "/?theme=" + theme,
       },
     };
   }
@@ -74,13 +79,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     await getAdminAuth().verifySessionCookie(session, true);
-    return { props: {} };
+    return { props: {theme} };
   } catch (error) {
     console.error(error);
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: "/?theme=" + theme,
       },
     };
   }

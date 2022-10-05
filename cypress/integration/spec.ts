@@ -74,7 +74,7 @@ context("ui test", () => {
     cy.get("#delete").click();
     cy.get("#confirm").type("プリコネ");
     cy.get("#deleteButton").click();
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("eq", "http://localhost:3000/?theme=light");
     cy.get("#login").should("exist");
   });
 });

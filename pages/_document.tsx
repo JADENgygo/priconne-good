@@ -17,7 +17,8 @@ export default function Document() {
         />
         <link rel="icon" href="/img/peko.png" />
       </Head>
-      <body className="bg-secondary text-light">
+      <body>
+        <script src="/script.js" async />
         <Main />
         <NextScript />
       </body>
