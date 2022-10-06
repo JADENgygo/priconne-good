@@ -16,26 +16,12 @@ import nookies from "nookies";
 import dayjs from "dayjs";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
 
-type Props = {
-  theme: "light" | "dark",
-};
-
-const Edit: NextPage<Props> = (props: Props) => {
+const Edit: NextPage = () => {
   const initNames = [...Array(29)].map(() => "");
   const [names, setNames] = useState(initNames);
   const initCounts = [...Array(29)].map(() => 0);
   const [counts, setCounts] = useState(initCounts);
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const inputs = document.querySelectorAll("input");
-    if (props.theme === "light") {
-      Array.from(inputs).forEach(e => e.classList.remove("member"));
-    }
-    else {
-      Array.from(inputs).forEach(e => e.classList.add("member"));
-    }
-  }, [props.theme]);
 
   const fetchDocRef = () => {
     const db = getFirestore();
@@ -162,11 +148,11 @@ const Edit: NextPage<Props> = (props: Props) => {
         <div key={i}>
           <div className="container mt-3">
             <div className="mb-3">
-              <label htmlFor={"name" + i.toString()} className="form-label">
+              <label htmlFor={"name" + i.toString()} className="form-label fw-bold">
                 メンバー{i + 1}
               </label>
               <input
-                className={`form-control ${props.theme === "light" ? "" : "bg-secondary text-light"}`}
+                className="form-control"
                 type="text"
                 id={"memberName" + i.toString()}
                 tabIndex={i + 1}
@@ -184,7 +170,7 @@ const Edit: NextPage<Props> = (props: Props) => {
               <div className="col">
                 <button
                   type="button"
-                  className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
+                  className="btn btn-outline-dark"
                   onClick={decrement(i)}
                   id={"minusButton" + i.toString()}
                 >
@@ -204,7 +190,7 @@ const Edit: NextPage<Props> = (props: Props) => {
                 </span>
                 <button
                   type="button"
-                  className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
+                  className="btn btn-outline-dark"
                   onClick={increment(i)}
                   id={"plusButton" + i.toString()}
                 >
@@ -216,7 +202,7 @@ const Edit: NextPage<Props> = (props: Props) => {
                   <div>
                     <button
                       type="button"
-                      className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"} me-3`}
+                      className="btn btn-outline-danger me-3"
                       onClick={reset(i)}
                       id={"resetButton" + i.toString()}
                     >
@@ -224,7 +210,7 @@ const Edit: NextPage<Props> = (props: Props) => {
                     </button>
                     <button
                       type="button"
-                      className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
+                      className="btn btn-outline-dark"
                       onClick={cancelReset(i)}
                       id={"cancelResetButton" + i.toString()}
                     >
@@ -234,7 +220,7 @@ const Edit: NextPage<Props> = (props: Props) => {
                 ) : (
                   <button
                     type="button"
-                    className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"}`}
+                    className="btn btn-outline-danger"
                     onClick={confirmReset(i)}
                     id={"confirmResetButton" + i.toString()}
                   >
@@ -252,7 +238,7 @@ const Edit: NextPage<Props> = (props: Props) => {
           <div>
             <button
               type="button"
-              className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"} me-3`}
+              className="btn btn-outline-danger me-3"
               onClick={resetAll}
               id="allResetButton"
             >
@@ -260,7 +246,7 @@ const Edit: NextPage<Props> = (props: Props) => {
             </button>
             <button
               type="button"
-              className={`btn ${props.theme === "light" ? "btn-outline-dark" : "btn-secondary"}`}
+              className="btn btn-outline-dark"
               onClick={cancelAllReset}
               id="cancelAllResetButton"
             >
@@ -270,7 +256,7 @@ const Edit: NextPage<Props> = (props: Props) => {
         ) : (
           <button
             type="button"
-            className={`btn ${props.theme === "light" ? "btn-outline-danger" : "btn-danger"}`}
+            className="btn btn-outline-danger"
             onClick={confirmAllReset}
             id="confirmAllResetButton"
           >
@@ -287,12 +273,11 @@ export default Edit;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
-  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
     return {
       redirect: {
         permanent: false,
-        destination: "/?theme=" + theme,
+        destination: "/",
       },
     };
   }
@@ -301,13 +286,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     await getAdminAuth().verifySessionCookie(session, true);
-    return { props: {theme} };
+    return { props: {} };
   } catch (error) {
     console.error(error);
     return {
       redirect: {
         permanent: false,
-        destination: "/?theme=" + theme,
+        destination: "/",
       },
     };
   }

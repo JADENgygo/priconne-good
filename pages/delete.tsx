@@ -7,13 +7,11 @@ import { deleteDoc, doc, getFirestore, collection } from "firebase/firestore";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import nookies from "nookies";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
+import { Loader } from "../components/loader";
 
-type Props = {
-  theme: "light" | "dark",
-};
-
-const Delete: NextPage<Props> = (props: Props) => {
+const Delete: NextPage = () => {
   const [disabled, setDisabled] = useState(true);
+  const [loaded, setLoaded] = useState(true);
   const router = useRouter();
 
   const confirm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +19,7 @@ const Delete: NextPage<Props> = (props: Props) => {
   };
 
   const deleteAccount = async () => {
+    setLoaded(false);
     const db = getFirestore();
     const collectionRef = collection(db, "users");
     const auth = getAuth();
@@ -36,19 +35,23 @@ const Delete: NextPage<Props> = (props: Props) => {
     router.reload();
   };
 
+  if (!loaded) {
+    return <Loader />;
+  }
+
   return (
     <div className="container mt-5">
       <div>
         アカウントを削除する場合は「プリコネ」と入力してください
         <input
           type="text"
-          className={`form-control ${props.theme === "light" ? "" : "bg-secondary text-light"} mt-3`}
+          className="form-control"
           onChange={confirm}
           id="confirm"
         />
         <button
           type="button"
-          className="mt-3 btn btn-danger"
+          className="mt-3 btn btn-danger keep"
           disabled={disabled}
           onClick={deleteAccount}
           id="deleteButton"
@@ -65,12 +68,11 @@ export default Delete;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
-  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
     return {
       redirect: {
         permanent: false,
-        destination: "/?theme=" + theme,
+        destination: "/",
       },
     };
   }
@@ -79,13 +81,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     await getAdminAuth().verifySessionCookie(session, true);
-    return { props: {theme} };
+    return { props: {} };
   } catch (error) {
     console.error(error);
     return {
       redirect: {
         permanent: false,
-        destination: "/?theme=" + theme,
+        destination: "/",
       },
     };
   }

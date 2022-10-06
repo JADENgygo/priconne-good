@@ -79,9 +79,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       {
         loaded ? (
           <div className="content">
-            <Header theme={router.query.theme === "dark" ? "dark" : "light"} />
+            <Header />
             <Component {...pageProps} />
-            <Footer theme={router.query.theme === "dark" ? "dark" : "light"} />
+            <Footer />
           </div>
         ) : (
           <Loader />
