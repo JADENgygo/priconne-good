@@ -2,8 +2,10 @@ import { useRouter } from "next/router";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
+import { Loader } from "./loader";
 
 export const Header = () => {
+  const [loaded, setLoaded] = useState(true);
   const router = useRouter();
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [authenticated, setAuthenticated] = useState(false);
@@ -27,6 +29,7 @@ export const Header = () => {
   };
 
   const logOut = async () => {
+    setLoaded(false);
     await fetch("/api/signout", {
       method: "POST",
       headers: {
@@ -35,6 +38,10 @@ export const Header = () => {
     });
     router.reload();
   };
+
+  if (!loaded) {
+    return <Loader />;
+  }
 
   return (
     <Navbar
