@@ -1,8 +1,4 @@
-type Props = {
-  theme: "light" | "dark",
-};
-
-export const Footer = (props: Props) => {
+export const Footer = () => {
   return (
     <footer
       className="text-center pt-3 pb-3"
@@ -13,7 +9,7 @@ export const Footer = (props: Props) => {
         </a>
         <a
           href="https://priconne-portfolio.vercel.app"
-          className={`ms-3 ${props.theme === "light" ? "link-dark" : "link-light"} link`}
+          className="ms-3 link"
         >
           闇プリン開発室
         </a>

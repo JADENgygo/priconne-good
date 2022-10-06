@@ -4,14 +4,14 @@ import nookies from "nookies";
 import { signOut, getAuth } from "firebase/auth";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   noSession: boolean;
-  theme: "light" | "dark",
 };
 
 const Home: NextPage<Props> = (props: Props) => {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   useEffect(() => {
     // ログイン中にユーザーがクッキーを削除した場合はログアウトする
     const f = async () => {
@@ -22,6 +22,15 @@ const Home: NextPage<Props> = (props: Props) => {
     };
     f();
   }, []);
+
+  useEffect(() => {
+    const f = () => {
+      const theme = localStorage.getItem("theme");
+      setTheme(theme === "dark" ? "dark" : "light");
+    };
+    f();
+    window.addEventListener('storage', f);
+  }, [])
 
   return (
     <div>
@@ -42,10 +51,10 @@ const Home: NextPage<Props> = (props: Props) => {
         <div className="me-lg-5 me-lg-5">
           <img
             className="img-fluid"
-            src={props.theme === "light" ? "/img/priconne-good-light.webp" : "/img/priconne-good-dark.webp"}
+            src={theme === "light" ? "/img/priconne-good-light.webp" : "/img/priconne-good-dark.webp"}
             alt="priconne-good"
             width={375}
-            height={592}
+            height={593}
           />
         </div>
         <div>
@@ -70,9 +79,8 @@ const Home: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = nookies.get(context);
   const session = cookie.session;
-  const theme = context.query.theme === "dark" ? "dark" : "light";
   if (!session) {
-    return { props: { noSession: true, theme } };
+    return { props: { noSession: true } };
   }
 
   initFirebaseAdminApp();
@@ -82,11 +90,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: "/edit?theme=" + theme,
+        destination: "/edit",
       },
     };
   } catch (error) {
-    return { props: { noSession: true, theme } };
+    return { props: { noSession: true } };
   }
 };
 

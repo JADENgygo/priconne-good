@@ -1,8 +1,14 @@
-const queries = location.search.split("&");
-for (let i = 0; i < queries.length; ++i) {
-  const matches = queries[i].match(/theme=(.+)/);
-  if (matches !== null && matches.length === 2 && matches[1] === "dark") {
-    document.body.classList.add("bg-dark", "text-light");
-    break;
+const theme = localStorage.getItem('theme');
+if (theme === null) {
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  if (dark) {
+    document.querySelector('html').classList.add("dark");
   }
+  localStorage.setItem("theme", dark ? "dark" : "light");
+}
+else {
+  if (theme === "dark") {
+    document.querySelector('html').classList.add("dark");
+  }
+  localStorage.setItem("theme", theme === "dark" ? "dark" : "light");
 }
