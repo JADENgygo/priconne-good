@@ -21,7 +21,7 @@ import { Footer } from "../components/footer";
 import { Loader } from "../components/loader";
 import Head from "next/head";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [loaded, setLoaded] = useState(false);
   const router = useRouter();
 
