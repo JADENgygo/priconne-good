@@ -12,4 +12,4 @@ RUN apt-get update \
 USER node
 WORKDIR /home/node/app
 
-CMD ["yarn", "emulate"]
+CMD ["npm", "run", "emulate"]

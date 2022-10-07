@@ -5,6 +5,7 @@ import { signOut, getAuth } from "firebase/auth";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
 import { useEffect, useState } from "react";
+import Image from "next/future/image";
 
 type Props = {
   noSession: boolean;
@@ -49,7 +50,7 @@ const Home: NextPage<Props> = (props: Props) => {
 
       <div className="container mt-5 mb-5 text-center d-flex justify-content-center align-items-center flex-wrap">
         <div className="me-lg-5 me-lg-5">
-          <img
+          <Image
             className="img-fluid"
             src={theme === "light" ? "/img/priconne-good-light.webp" : "/img/priconne-good-dark.webp"}
             alt="priconne-good"
