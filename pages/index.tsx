@@ -5,6 +5,7 @@ import { signOut, getAuth } from "firebase/auth";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import { initFirebaseAdminApp } from "../lib/firebase-admin";
 import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
 import Image from "next/future/image";
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
 };
 
 const Home: NextPage<Props> = (props: Props) => {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"" | "light" | "dark">("");
   useEffect(() => {
     // ログイン中にユーザーがクッキーを削除した場合はログアウトする
     const f = async () => {
@@ -26,8 +27,8 @@ const Home: NextPage<Props> = (props: Props) => {
 
   useEffect(() => {
     const f = () => {
-      const theme = localStorage.getItem("theme");
-      setTheme(theme === "dark" ? "dark" : "light");
+      const cookie = parseCookies();
+      setTheme(cookie.theme === "dark" ? "dark" : "light");
     };
     f();
     window.addEventListener('storage', f);
@@ -56,6 +57,7 @@ const Home: NextPage<Props> = (props: Props) => {
             alt="priconne-good"
             width={375}
             height={593}
+            style={{visibility: theme === "" ? "hidden" : "visible"}}
           />
         </div>
         <div>
