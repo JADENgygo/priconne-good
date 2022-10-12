@@ -43,3 +43,5 @@ firestore-debug.log
 ui-debug.log
 cypress/videos
 cypress/screenshots
+
+next-env.d.ts

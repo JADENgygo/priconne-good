@@ -170,7 +170,7 @@ const Edit: NextPage = () => {
               <div className="col">
                 <button
                   type="button"
-                  className="btn btn-outline-dark"
+                  className="btn btn-outline-primary"
                   onClick={decrement(i)}
                   id={"minusButton" + i.toString()}
                 >
@@ -190,7 +190,7 @@ const Edit: NextPage = () => {
                 </span>
                 <button
                   type="button"
-                  className="btn btn-outline-dark"
+                  className="btn btn-outline-primary"
                   onClick={increment(i)}
                   id={"plusButton" + i.toString()}
                 >
@@ -210,7 +210,7 @@ const Edit: NextPage = () => {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-outline-dark"
+                      className="btn btn-outline-primary"
                       onClick={cancelReset(i)}
                       id={"cancelResetButton" + i.toString()}
                     >
@@ -246,7 +246,7 @@ const Edit: NextPage = () => {
             </button>
             <button
               type="button"
-              className="btn btn-outline-dark"
+              className="btn btn-outline-primary"
               onClick={cancelAllReset}
               id="cancelAllResetButton"
             >

@@ -3,11 +3,12 @@ import { Nav, Navbar, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { Loader } from "./loader";
+import { parseCookies, setCookie } from "nookies";
 
 export const Header = () => {
   const [loaded, setLoaded] = useState(true);
   const router = useRouter();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"" | "light" | "dark">("");
   const [authenticated, setAuthenticated] = useState(false);
 
   const auth = getAuth();
@@ -16,16 +17,17 @@ export const Header = () => {
   });
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    setTheme(theme === "dark" ? "dark" : "light");
+    const cookie = parseCookies();
+    setTheme(cookie.theme === "dark" ? "dark" : "light");
   }, [])
 
   const changeTheme = () => {
-    document.querySelector('html')?.classList.toggle('dark');
-    const theme = localStorage.getItem('theme');
-    localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
-    setTheme(theme === "dark" ? "light" : "dark");
-    window.dispatchEvent(new Event("storage"));
+    const cookie = parseCookies();
+    setCookie(null, "theme", cookie.theme === "dark" ? "light" : "dark", {
+      maxAge: 60 * 60 * 24 * 30 * 12 * 1,
+      path: "/"
+    });
+    router.reload();
   };
 
   const logOut = async () => {
@@ -48,6 +50,7 @@ export const Header = () => {
       collapseOnSelect
       expand="sm"
       className="pt-3 pb-3"
+      variant={theme}
     >
       <Container>
         <Navbar.Brand className="fs-3">
@@ -56,7 +59,7 @@ export const Header = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav>
-            <div className="text-nowrap text-white row row-cols-auto">
+            <div className="text-nowrap row row-cols-auto">
               <div className="col">
                 <Nav.Link href="#" className="active link" onClick={() => router.push("/")}>ホーム</Nav.Link>
               </div>
@@ -74,7 +77,7 @@ export const Header = () => {
                   </div>
                 )}
               </div>
-              <div className="col">
+              <div className="col" style={{visibility: theme === "" ? "hidden" : "visible"}}>
                 <Nav.Link href="#" className="active link" onClick={changeTheme}>ダークモード: {theme === "light" ? "オフ": "オン"}</Nav.Link>
               </div>
               {authenticated && (
